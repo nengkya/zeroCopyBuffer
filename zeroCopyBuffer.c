@@ -7,6 +7,9 @@ void copy(const char * sourceFilePath, const char * destinationFilePath) {
 
 	FILE * sourceFilePointer, * destinationFilePointer;
 
+	/*
+	since it's unsigned, size_t may have twice (or more) the positive range of a signed int . So if the subscript type were signed int , it might be possible to allocate (using size_t ) an array with more elements than can be indexed (using int ).
+	*/
 	size_t length;
 
 	sourceFilePointer 	   = fopen(sourceFilePath, "rb");
