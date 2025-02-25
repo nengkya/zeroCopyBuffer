@@ -3,7 +3,19 @@
 #include <stdlib.h> /*exit(1) from anywhere on your code will terminate program execution immediately*/
 
 
-void copy(const char * ) {
+void copy(const char * sourceFilePath, const char * destinationFilePath) {
+
+	FILE * sourceFilePointer, * destinationFilePointer;
+
+	size_t length;
+
+	sourceFilePointer 	   = fopen(sourceFilePath, "rb");
+	destinationFilePointer = fopen(destinationFilePath, "wb");
+
+	while (!feof(sourceFilePointer)) {
+
+
+	}
 
 	printf("copy\n");
 
@@ -30,10 +42,10 @@ int main(int argumentCounter, char ** argumentValue) {
 	>0 if the first non-matching character in str1 is greater (in ASCII) than that of str2
 	<0 if the first non-matching character in str1 is lower (in ASCII)   than that of str2
 
-	if mode = 1, copy <source file> <destination file> <mode>
-	else 	 zeroCopy <source file> <destination file> <mode>
+	if mode = 1, zero-copy <source file> <destination file> <mode>
+	else 			  copy <source file> <destination file> <mode>
 	*/
-	if (strcmp(argumentValue[3], "1")) copy(); else zeroCopy();
+	if (strcmp(argumentValue[3], "1")) copy(argumentValue[1], argumentValue[2]); else zeroCopy();
 
 
 }
