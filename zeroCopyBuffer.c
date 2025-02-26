@@ -1,6 +1,7 @@
 #include "stdio.h"
 #include "string.h" /*strcmp();*/
 #include <stdlib.h> /*exit(1) from anywhere on your code will terminate program execution immediately*/
+#include "fcntl.h" /*O_RDONLY*/
 
 
 void copy(const char * sourceFilePath, const char * destinationFilePath) {
@@ -45,14 +46,44 @@ void zeroCopy(const char * sourceFilePath, const char * destinationFilePath) {
 
 	int fileDescriptorSource;
 
+	struct stat statusBuffer;
+
 	/*
 	open() function establish connection between a file and a file descriptor
 	it shall create an open file description that refers to a file
 	and a file descriptor that refers to that open file description
 	the file descriptor is used by other I/O functions to refer to that file
+	
+	int open (const char * path, int flags);
 	*/
-	fileDescriptorSource = open();
+	fileDescriptorSource = open(sourceFilePath, O_RDONLY);
 
+	/*
+	struct stat {
+		ino_t	  st_ino;
+		mode_t	  st_mode;	  specifies file type information and the file permission bits
+		ino_t	  st_ino	  the file serial number, which distinguishes this file from all other files on the same device
+		dev_t	  st_dev	  identifies the device containing the file.
+							  the st_dev value is not necessarily consistent across reboots or system crashes, however
+		nlink_t	  st_nlink;	  the number of hard links to the file. count track of how many directories have entries for this file.
+							  if the count is ever decremented to zero, then the file itself is discarded as soon as no process still holds it open.
+							  symbolic links are not counted in the total
+		uid_t	  st_uid;	  user ID of the file’s owner
+		gid_t	  st_gid;	  group ID of the file
+		dev_t	  st_rdev;
+		off_t	  st_size;	  specifies the size of a regular file in bytes. for files that are really devices, this field isn’t usually meaningful.
+							  for symbolic links this specifies the length of the file name the link refers to
+		time_t	  st_atime;	  the last access time for the file
+		time_t	  st_mtime;	  the time of the last modification to the contents of the file
+		time_t	  st_ctime;
+		blksize_t st_blksize;
+		blkcnt_t  st_blocks;
+		mode_t	  st_attr;
+	}; 
+
+	int fstat(int fd, struct stat * buf); file status
+	*/
+	fstat(fileDescriptorSource, );
 
 	printf("zero-copy\n");
 
