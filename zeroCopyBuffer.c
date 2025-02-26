@@ -29,7 +29,9 @@ void copy(const char * sourceFilePath, const char * destinationFilePath) {
 		*/
 		lengthOfFileBuffer = fread(fileBuffer, 1, bufferSize, sourceFilePointer);
 
-		/*size_t fwrite(const void * restrict buffer, size_t sizeofEachElement, size_t countOfElementToBeWrite, FILE * restrict stream);*/
+		/*
+		size_t fwrite(const void * restrict buffer, size_t sizeofEachElement,
+			size_t countOfElementToBeWrite, FILE * restrict stream);*/
 		fwrite(fileBuffer, 1, lengthOfFileBuffer, destinationFilePointer);
 
 	}
@@ -38,12 +40,23 @@ void copy(const char * sourceFilePath, const char * destinationFilePath) {
 
 }
 
-void zeroCopy() {
+
+void zeroCopy(const char * sourceFilePath, const char * destinationFilePath) {
+
+	int fileDescriptorSource;
+
+	/*
+	open() function establish connection between a file and a file descriptor
+	it shall create an open file description that refers to a file
+	and a file descriptor that refers to that open file description
+	the file descriptor is used by other I/O functions to refer to that file
+	*/
+	fileDescriptorSource = open();
+
 
 	printf("zero-copy\n");
 
 }
-
 
 
 int main(int argumentCounter, char ** argumentValue) {
@@ -62,6 +75,9 @@ int main(int argumentCounter, char ** argumentValue) {
 	if mode = 1, zero-copy <source file> <destination file> <mode>
 	else 			  copy <source file> <destination file> <mode>
 	*/
-	if (strcmp(argumentValue[3], "1")) copy(argumentValue[1], argumentValue[2]); else zeroCopy();
+	if (strcmp(argumentValue[3], "1"))
+		copy(argumentValue[1], argumentValue[2]);
+	else
+		zeroCopy(argumentValue[1], argumentValue[2]);
 
 }
