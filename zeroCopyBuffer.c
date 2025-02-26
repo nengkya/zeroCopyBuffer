@@ -8,15 +8,29 @@ void copy(const char * sourceFilePath, const char * destinationFilePath) {
 	FILE * sourceFilePointer, * destinationFilePointer;
 
 	/*
-	since it's unsigned, size_t may have twice (or more) the positive range of a signed int . So if the subscript type were signed int , it might be possible to allocate (using size_t ) an array with more elements than can be indexed (using int ).
+	since size_t unsigned, size_t may have twice (or more) the positive range of a signed int.
+	so if the subscript type were signed int, it might be possible to allocate (using size_t) an array
+	with more elements than can be indexed (using int).
 	*/
-	size_t length;
+	size_t lengthOfFileBuffer;
+
+	int bufferSize = 8 * 1024;
+	char fileBuffer[bufferSize];
 
 	sourceFilePointer 	   = fopen(sourceFilePath, "rb");
 	destinationFilePointer = fopen(destinationFilePath, "wb");
 
 	while (!feof(sourceFilePointer)) {
 
+		/*
+		the return value of fread is the number of items successfully read from the file
+		if fread returns 0, it means no items were read, which could be due to an error or reaching the end of the file
+		size_t fread(void * fileBuffer, size_t sizeOfEachElement, size_t countOfElementsToBeRead, FILE * stream);
+		*/
+		lengthOfFileBuffer = fread(fileBuffer, 1, bufferSize, sourceFilePointer);
+
+		/*size_t fwrite(const void * restrict buffer, size_t sizeofEachElement, size_t countOfElementToBeWrite, FILE * restrict stream);*/
+		fwrite(fileBuffer, 1, lengthOfFileBuffer, destinationFilePointer);
 
 	}
 
@@ -49,6 +63,5 @@ int main(int argumentCounter, char ** argumentValue) {
 	else 			  copy <source file> <destination file> <mode>
 	*/
 	if (strcmp(argumentValue[3], "1")) copy(argumentValue[1], argumentValue[2]); else zeroCopy();
-
 
 }
